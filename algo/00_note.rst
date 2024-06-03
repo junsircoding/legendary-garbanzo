@@ -175,7 +175,7 @@
 
 .. math::
 
-    2^0 \quad 2^1 \quad 2^2 \quad 2^3 \quad \dot \quad 2^k \quad \dot \quad 2^x = n
+    2^0 \quad 2^1 \quad 2^2 \quad 2^3 \quad \dots \quad 2^k \quad \dots \quad 2^x = n
 
 
 由 :math:`2^x = n` 可求解 :math:`x = log_2{n}`
