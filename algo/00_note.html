@@ -1,0 +1,197 @@
+<h1 id="什么是时间复杂度">什么是时间复杂度</h1>
+<p>数据结构和算法致力于让程序运行更快和更省存储空间，由此首要一点就是要会分析一段程序的时间、空间复杂度。</p>
+<p>程序的执行效率，就是代码的执行时间。</p>
+<p>比如这段代码，求 1,2,3...n 的累加和。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="dt">int</span> cal(<span class="dt">int</span> n) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="dt">int</span> sum = <span class="dv">0</span>;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">1</span>;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>    <span class="cf">for</span> (; i &lt;= n; ++i) {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>        sum += i;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    }</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>    <span class="cf">return</span> sum;</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>}</span></code></pre></div>
+<p>假设每行代码的执行时间都一样，为 <code>unit_time</code> 。所有代码执行时间 <code>T(n) = (2n + 2) * unit_time</code> 。</p>
+<p>再看一段代码：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">int</span> cal(<span class="dt">int</span> n) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    <span class="dt">int</span> sum = <span class="dv">0</span>;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">1</span>;</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="dt">int</span> j = <span class="dv">1</span>;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    <span class="cf">for</span> (; i &lt;= n; ++i) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>        j = <span class="dv">1</span>;</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>        <span class="cf">for</span> (; j &lt;= n; ++j) {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>            sum = sum + i * j;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>        }</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    }</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    <span class="cf">return</span> sum;</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>}</span></code></pre></div>
+<p><code>T(n) = (2n^2 + 2n + 3) * unit_time</code> 。</p>
+<p>由此可以得出结论，代码总执行时间 <code>T(n)</code> 和每行代码执行次数 <code>f(n)</code> 成正比，即 <code>T(n) = O( f(n) )</code> 。</p>
+<blockquote>
+<div class="line-block"><code>T(n)</code> 表示代码执行时间<br />
+<code>n</code> 表示数据规模大小<br />
+<code>f(n)</code> 表示每代码执行的次数总和<br />
+<code>O</code> 表示 <code>T(n)</code> 与 <code>f(n)</code> 成正比</div>
+</blockquote>
+<p>所以，第一个例子中的 <code>T(n) = O(2n + 2)</code> ，第二个例子中的 <code>T(n) = O(2n^2 + 2n + 3)</code> ，这就是 <strong>大O时间复杂度表示法</strong> 。</p>
+<p>它其实并不具体表示代码执行时间，而是表示 <strong>代码执行时间随数据规模增长的趋势</strong> ，也叫做 <strong>渐进时间复杂度</strong> ，简称 <strong>时间复杂度</strong> 。</p>
+<p>当 <code>n</code> 很大时，比如大到 <code>10000</code> 、 <code>100000</code> ，的话，公式中的低阶、常量、系数三不忿并不左右增长趋势，所以都可忽略，只关注最大量级就可以。</p>
+<p>由此刚才的两个公式可以这样表示， <code>T(n) = O(n)</code> ； <code>T(n) = O(n^2)</code> 。</p>
+<h1 id="如何分析程序的时间复杂度">如何分析程序的时间复杂度</h1>
+<p>分析一段代码的时间复杂度，有以下三个方法：</p>
+<ol type="1">
+<li>只关注循环执行次数最多的一段代码。</li>
+<li>加法法则：总复杂度等于量级最大的那段代码的复杂度。</li>
+<li>乘法法则：嵌套代码的复杂度等于嵌套内外代码复杂度的乘积。</li>
+</ol>
+<p>方法 1 很明显，方法 2 看下面这个例子：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">int</span> cal(<span class="dt">int</span> n) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="dt">int</span> sum_1 = <span class="dv">0</span>;</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    <span class="dt">int</span> p = <span class="dv">1</span>;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="cf">for</span> (; p &lt; <span class="dv">100</span>; ++p) {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>        sum_1 = sum_1 + p;</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    }</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    <span class="dt">int</span> sum_2 = <span class="dv">0</span>;</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    <span class="dt">int</span> q = <span class="dv">1</span>;</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>    <span class="cf">for</span> (; q &lt; n; ++q) {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>        sum_2 = sum_2 + q;</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>    }</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>    <span class="dt">int</span> sum_3 = <span class="dv">0</span>;</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">1</span>;</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>    <span class="dt">int</span> j = <span class="dv">1</span>;</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>    <span class="cf">for</span> (;, i &lt;= n; ++i) {</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>        j = <span class="dv">1</span>;</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>        <span class="cf">for</span> (; j &lt;= n; ++j) {</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>            sum_3 = sum_3 + i * j;</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>        }</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>    }</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a>    <span class="cf">return</span> sum_1 + sum_2 + sum_3;</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a>}</span></code></pre></div>
+<p>这里 <code>T1(n) = O(f(n))</code> ， <code>T2(n) = O(n^2)</code> ， <code>T(n) = max(T1, T2) = T2 = O(n^2)</code> 。</p>
+<p>方法 3 看下面这个例子：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">int</span> cal(<span class="dt">int</span> n) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="dt">int</span> ret = <span class="dv">0</span>;</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">1</span>;</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="cf">for</span> (; i &lt; n; ++i) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>        ret = ret + f(i);</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    }</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="dt">int</span> f(<span class="dt">int</span> n) {</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>    <span class="dt">int</span> sum = <span class="dv">0</span>;</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">1</span>;</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>    <span class="cf">for</span> (; i &lt; n; ++i) {</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>        sum = sum + i;</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>    }</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    <span class="cf">return</span> sum;</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>}</span></code></pre></div>
+<p>在这个代码中， <code>cal()</code> 函数的 <code>T(n) = T1(n) * T2(n) = O(n) * O(n) = O(n^2)</code> 。</p>
+<h1 id="几种常见的时间复杂度">几种常见的时间复杂度</h1>
+<ul>
+<li>常量阶 <code>O(1)</code></li>
+<li>对数阶 <code>O(log n)</code></li>
+<li>线性阶 <code>O(n)</code></li>
+<li>线性对数阶 <code>O(n logn)</code></li>
+<li>平方阶 <code>O(n^2)</code> ， 立方阶 <code>O(N^3)</code> ， k 次方阶 <code>O(n^k)</code></li>
+<li>指数阶 <code>O(2^n)</code></li>
+<li>阶乘阶 <code>O(n!)</code></li>
+</ul>
+<p>这几个时间复杂度可以分为两类： <strong>多项式量级</strong> 和 <strong>非多项式量级</strong> ，其中非多项式量级只有两个： <code>O(2^n)</code> 和 <code>O(n!)</code> ，这类算法问题叫做 NP 问题（非确定多项式问题，Non-Deterministic Polynomial）。</p>
+<p>当数据规模 n 越来越大时， NP 问题的执行时间会变得无限长，所以 NP 类型的算法是非常低效的算法，不要使用，主要考虑 <strong>多项式时间复杂度</strong> 。</p>
+<ol type="1">
+<li><p><code>O(1)</code></p>
+<blockquote>
+<p><code>O(1)</code> 只是常量级时间复杂度的一种表示方法，并不是只执行了一行代码。下面这段代码有三行，但仍然是 <code>O(1)</code> 。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">int</span> i = <span class="dv">8</span>;</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="dt">int</span> j = <span class="dv">6</span>;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="dt">int</span> sum = i + j;</span></code></pre></div>
+<p>一般情况下，只要算法中不存在循环语句、递归语句，即使有成千上万行的代码，其时间复杂度也是 <code>O(1)</code> 。</p>
+</blockquote></li>
+<li><p><code>O(logn)</code> 、 <code>O(n logn)</code></p>
+<blockquote>
+<p>对数阶时间复杂度非常常见，同时也是最难分析的一种时间复杂度，下面是一个例子：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>i = <span class="dv">1</span>;</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="cf">while</span> (i &lt;= n) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    i = i * <span class="dv">2</span>;</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span></code></pre></div>
+<p>上面这个代码的 while 循环中， <code>i</code> 的取值是个等比数列：</p>
+<p>2^0 2^1 2^2 2^3 ... 2^k ... 2^x = n</p>
+<p>由 <code>2^x = n</code> 可求解 <code>x = log_2 n</code></p>
+<p>所以，这段代码的时间复杂度是 <code>O(log_2 n)</code> 。</p>
+<p>如果某个代码的时间复杂度是 <code>O(log_3 n)</code> ，因为 <code>log_3 n = log_3 2 * log_2 n</code> ，所以不管对数的底数是多少，都可以看做 <code>O(logn)</code> 。</p>
+<p>结合之前的思路，如果一个函数调用了 n 次一个时间复杂度为 <code>O(logn)</code> 的函数，那么整体程序的时间复杂度就是 <code>O(n logn)</code> 。</p>
+<p>另外，归并排序和快速排序的时间复杂度都是 <code>O(n logn)</code> 。</p>
+</blockquote></li>
+<li><p><code>O(m + n)</code> 、 <code>O(m * n)</code></p>
+<blockquote>
+<p>看下面这个代码：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="dt">int</span> cal(<span class="dt">int</span> m, <span class="dt">int</span> n) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>    <span class="dt">int</span> sum_1 = <span class="dv">0</span>;</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">1</span>;</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="cf">for</span> (; i &lt; m; ++i) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>        sum_1 = sum_1 + i;</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    }</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>    <span class="dt">int</span> sum_2 = <span class="dv">0</span>;</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    <span class="dt">int</span> j = <span class="dv">1</span>;</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="cf">for</span> (; j &lt; n; ++j) {</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>        sum_2 = sum_2 + j;</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    }</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    <span class="cf">return</span> sum_1 + sum_2;</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>}</span></code></pre></div>
+<p>上面的代码中，m 和 n 都表示数据规模，无法判断谁大谁小，因此都要考虑，所以这个程序的时间复杂度就是 <code>O(m + n)</code> 。</p>
+</blockquote></li>
+</ol>
+<h1 id="什么是空间复杂度">什么是空间复杂度</h1>
+<p>空间复杂度是 <strong>算法的存储空间与数据规模之间的增长关系</strong> 。</p>
+<p>看下面这个代码：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">void</span> print(<span class="dt">int</span> n) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">0</span>;</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    <span class="dt">int</span>[] a = new <span class="dt">int</span>[n];</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="cf">for</span> (i; i &lt; n; ++i) {</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>        a[i] = i * i;</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>    }</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>    <span class="cf">for</span> (i = n - <span class="dv">1</span>; i &gt;= <span class="dv">0</span>; --i) {</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>        print out a[i]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    }</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>}</span></code></pre></div>
+<p>这段代码的空间复杂度是 <code>O(n)</code> ，因为都是在长度为 n 的一个数组里面操作。</p>
+<p>常见的空间复杂度就是 <code>O(1)</code> 、 <code>O(n)</code> 、 <code>O(n^2)</code> ，像 <code>O(logn)</code> 、 <code>O(n logn)</code> 这样的基本见不到。</p>
+<p>有四个复杂度方面的知识点：*<em>最好情况时间复杂度、最坏情况时间复杂度、平均情况时间复杂度、均摊时间复杂度</em>*。</p>
+<h1 id="最好最坏情况时间复杂度">最好、最坏情况时间复杂度</h1>
+<p>看这段代码：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">// n 表示数组 array 的长度</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="dt">int</span> find(<span class="dt">int</span>[] array, <span class="dt">int</span> n, <span class="dt">int</span> x) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">0</span>;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    <span class="dt">int</span> pos = -<span class="dv">1</span>;</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    <span class="cf">for</span> (; i &lt; n; ++i) {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>        <span class="cf">if</span> (array[i] == x) pos = i;</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    }</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    <span class="cf">return</span> pos;</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>}</span></code></pre></div>
+<p>这段代码的作用是返回 x 在 array 中的索引，如果没找到，就返回 -1 ，按照上面的思路，这段代码的复杂度是 <code>O(n)</code> 。</p>
+<p>实际上，如果中途找到了这个数据，就不用继续遍历了，所以代码可以这样修改：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">// n 表示数组 array 的长度</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="dt">int</span> find(<span class="dt">int</span>[] array, <span class="dt">int</span> n, <span class="dt">int</span> x) {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    <span class="dt">int</span> i = <span class="dv">0</span>;</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    <span class="dt">int</span> pos = -<span class="dv">1</span>;</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="cf">for</span> (; i &lt; n; ++i) {</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>        <span class="cf">if</span> (array[i] == x) {</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>            pos = i;</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>            <span class="cf">break</span>;</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>        } </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>    }</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>    <span class="cf">return</span> pos;</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a>}</span></code></pre></div>
+<p>修改后确实达到了目的，但这时的代码再用之前的方法去分析时间复杂度，好像就不太清晰了。</p>
+<p>如果 x 恰好在数组的第一位，那么就是 <code>O(1)</code> ，如果 x 恰好在数组的最后一位，那么就是 <code>O(n)</code> 。 也就是说，不同的情况下，复杂度是不一样的。</p>
+<p>为了表示代码在不同情况下的时间复杂度，就引入了三个概念： <strong>最好情况时间复杂度</strong> （ <code>O(1)</code> ）、 <strong>最坏情况时间复杂度</strong> （ <code>O(n)</code> ）和 <strong>平均情况时间复杂度</strong> 。</p>
+<p>最好和最坏都是比较极端的情况，发生的概率并不大，所以还要分析平均情况时间复杂度。</p>
+<p>数据 x 在 array 中的情况共有 n+1 种。如果 x 在 array 中，有 0~n-1 ，也就是 n 种， x 还可能不在 array 中。</p>
+<p>把每种情况下，需要查找的次数累加起来，然后再除以 n+1 ，就可以算出平均时间复杂度。</p>
+<p><br /><img style="vertical-align:middle" src="https://latex.codecogs.com/png.latex?%5Cdisplaystyle%20%5Cfrac%7B1%2B2%2B3%2B%5Cdots%2Bn%2Bn%7D%7Bn%2B1%7D%3D%5Cfrac%7Bn%28n%2B3%29%7D%7B2%28n%2B1%29%7D" alt="\frac{1+2+3+\dots+n+n}{n+1}=\frac{n(n+3)}{2(n+1)}" title="\frac{1+2+3+\dots+n+n}{n+1}=\frac{n(n+3)}{2(n+1)}" /><br /></p>
+<p>按照原则，常量、系数、低阶可以省略，所以这个公式简化之后就是 <code>O(n)</code> 。</p>
+<pre class="shell"><code># pandoc 编译 rst 的 latex 方法
+pandoc 00_note.rst --webtex -o 00_note.html</code></pre>
