@@ -175,10 +175,10 @@
 
 .. math::
 
-    2^0 2^1 2^2 2^3 \dot 2^k \dot 2^x = n
+    2^0 \quad 2^1 \quad 2^2 \quad 2^3 \quad \dot \quad 2^k \quad \dot \quad 2^x = n
 
 
-由 ``2^x = n`` 可求解 :math:`x = log_2{n}`
+由 :math:`2^x = n` 可求解 :math:`x = log_2{n}`
 
 所以，这段代码的时间复杂度是 :math:`O(log_2{n})` 。
 
