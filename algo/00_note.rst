@@ -303,12 +303,12 @@
  | # pandoc 编译 rst 的 latex 方法
  | pandoc 00_note.rst --webtex -o 00_note.html
 
- 但是，其实这 n+1 种情况，每一种出现的概率并不是一样的。
+但是，其实这 n+1 种情况，每一种出现的概率并不是一样的。
 
- 假设 x 在 array 中的概率和不在的概率均为 :math:`\frac{1}{2}` 。
+假设 x 在 array 中的概率和不在的概率均为 :math:`\frac{1}{2}` 。
 
- 在 x 存在于 array 的情况下， x 出现在 0~n-1 这 n 个位置上的概率也是一样的，都是 :math:`\frac{1}{n}` 。
+在 x 存在于 array 的情况下， x 出现在 0~n-1 这 n 个位置上的概率也是一样的，都是 :math:`\frac{1}{n}` 。
 
- 所以， x 出现在 0~n-1 这 n 个位置的概率为： :math:`\frac{1}{2} * \frac{1}{n} = \frac{1}{2n}` 。
+所以， x 出现在 0~n-1 这 n 个位置的概率为： :math:`\frac{1}{2} * \frac{1}{n} = \frac{1}{2n}` 。
 
 
