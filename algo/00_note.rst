@@ -311,4 +311,45 @@
 
 所以， x 出现在 0~n-1 这 n 个位置的概率为： :math:`\frac{1}{2} \times \frac{1}{n} = \frac{1}{2n}` 。
 
+由此，把各种情况发生的概率都考虑上，计算如下：
+
+.. math::
+
+   1 \times \frac{1}{2n} + 2 \times \frac{1}{2n} + 3 \times \frac{1}{2n} + \dots + n \times \frac{1}{2n} + n \times \frac{1}{2} = \frac{3n+1}{4}
+
+这个值就是概率论中的 **加权平均值** ，也叫做 **期望值** ，所以平均时间复杂度的全称应该叫  **加权平均时间复杂度** 或者 **期望时间复杂度** 。
+
+去掉系数和常量之后，这段代码的加权平均时间复杂度是 :math:`O(n)` 。
+
+均摊时间复杂度
+------------------------------
+
+平均复杂度用的比较少，均摊时间复杂度用的更少。看下面的代码：
+
+.. code-block::c
+   :linenos:
+
+   // arrary 表示一个长度为 n 的数组
+   // 代码中的 array.length 就等于 n
+   
+   int[] array = new int[n];
+   int count = 0;
+
+   void insert(int val) {
+       if (count == array.length) {
+           int sum = 0;
+           for (int i = 0; i < array.length; ++i) {
+               sum = sum + array[i];
+           }
+           array[0] = sum;
+           count = 1;
+       }
+
+       array[count] = val;
+       ++count;
+
+   }
+   
+
+
 
